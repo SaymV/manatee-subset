@@ -3,7 +3,7 @@
  *
  *  A JavaCC specification for a subset of Manatee.
  *
- *  Test change
+ *  Test change of stuff
  */
 
 options {
