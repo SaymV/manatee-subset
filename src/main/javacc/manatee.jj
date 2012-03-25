@@ -2,6 +2,8 @@
  *  manatee.jj
  *
  *  A JavaCC specification for a subset of Manatee.
+ *
+ *  Test change
  */
 
 options {
