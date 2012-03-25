@@ -15,7 +15,7 @@ Here are some of the full language features not implemented in this subset:
 * Increment and decrement statements
 * Parallel assignment
 * Exceptions
-* Timers
+* Timers                                                    - Added
 * `unless` and `until` modifiers
 * Bitwise operators
 * Modulo operator
