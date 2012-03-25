@@ -9,10 +9,16 @@ public class CallStatement extends Statement {
     private String procedureName;
     private List<Expression> args;
     private Procedure procedure;
+    private Expression delay;
 
-    public CallStatement(String procedureName, List<Expression> args) {
+    public CallStatement(String procedureName, List<Expression> args, Expression delay) {
         this.procedureName = procedureName;
         this.args = args;
+        this.delay = delay;
+    }
+    
+    public Expression getDelay() {
+        return delay;
     }
 
     public String getProcedureName() {
@@ -35,6 +41,11 @@ public class CallStatement extends Statement {
             a.analyze(log, table, owner, inLoop);
         }
 
+        if (delay != null) {
+	        delay.analyze(log, table, owner, inLoop);
+	        delay.assertArithmetic("Procedure call delay", log);
+        }
+        
         // Find out which procedure we're referring to.
         procedure = table.lookupProcedure(procedureName, log);
 

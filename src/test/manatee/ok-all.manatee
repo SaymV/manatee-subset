@@ -73,3 +73,4 @@ end
 my array is [5.1, 17.1*cat, 22.1, 6.1]
 do sort(array)
 do sort([9.6])
+do sort(array) after 5 seconds

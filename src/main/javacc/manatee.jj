@@ -55,6 +55,7 @@ TOKEN: {
     | "yes" | "no" | "not" | "length" | "of"
     | ":" | "," | "+" | "-" | "*" | "/" | "<<" | ">>"
     | "<" | "<=" | "=" | "≠" | ">=" | ">" | "(" | ")" | "[" | "]"
+    | "after" | "seconds"
 |
     < BR: "\n" | "\r" | "\r\n" >
 |
@@ -321,7 +322,7 @@ Block BLOCK(): {
     {return new Block(statements);}
 }
 
-// ----------------------------
+// ------------------------------------------
 // SIMPLESTMT -> write EXP
 //            |  read EXP
 //            |  set EXP to EXP
@@ -329,13 +330,15 @@ Block BLOCK(): {
 //            |  return EXP?
 //            |  do nothing
 //            |  do ID EXPLIST?
-// ----------------------------
+//            |  do EXP (after EXP seconds)?
+// ------------------------------------------
 
 Statement SIMPLESTMT(): {
     Expression e = null;
     Token t = null;
     Expression source;
     Expression target;
+    Expression delay = null;
     List<Expression> args = new ArrayList<Expression>();
 }{
     (
@@ -357,8 +360,8 @@ Statement SIMPLESTMT(): {
         LOOKAHEAD(2) "do" "nothing"
         {return new DoNothingStatement();}
     |
-        "do" t = <ID> args = EXPLIST()
-        {return new CallStatement(t.image, args);}
+        "do" t = <ID> args = EXPLIST() ("after" delay = EXP() "seconds")?
+        {return new CallStatement(t.image, args, delay);}
     )
 }
 

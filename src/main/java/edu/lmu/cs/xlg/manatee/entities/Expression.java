@@ -46,7 +46,7 @@ public abstract class Expression extends Entity {
     public boolean isArrayOrString() {
         return isArray() || type == Type.STRING;
     }
-
+    
     // Helpers for semantic analysis, called from the analyze methods of other expressions.  These
     // are by no means necessary, but they are very convenient.
 
