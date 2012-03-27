@@ -55,7 +55,7 @@ TOKEN: {
     | "yes" | "no" | "not" | "length" | "of"
     | ":" | "," | "+" | "-" | "*" | "/" | "<<" | ">>"
     | "<" | "<=" | "=" | "≠" | ">=" | ">" | "(" | ")" | "[" | "]"
-    | "after" | "seconds" | "unless" | "until"
+    | "after" | "seconds" | "unless" | "until" | "increment" | "decrement"
 |
     < BR: "\n" | "\r" | "\r\n" >
 |
@@ -331,6 +331,8 @@ Block BLOCK(): {
 //            |  do nothing
 //            |  do ID EXPLIST?
 //            |  do EXP (after EXP seconds)?
+//            |  increment EXP (by EXP)?
+//            |  decrement EXP (by EXP)?
 // ------------------------------------------
 
 Statement SIMPLESTMT(): {
@@ -339,6 +341,7 @@ Statement SIMPLESTMT(): {
     Expression source;
     Expression target;
     Expression delay = null;
+    Expression delta = null;
     List<Expression> args = new ArrayList<Expression>();
 }{
     (
@@ -362,6 +365,12 @@ Statement SIMPLESTMT(): {
     |
         "do" t = <ID> args = EXPLIST() ("after" delay = EXP() "seconds")?
         {return new CallStatement(t.image, args, delay);}
+    |
+        "increment" target = EXP() ("by" delta = EXP())?
+        {return new IncrementStatement(target, delta);}
+    |
+        "decrement" target = EXP() ("by" delta = EXP())?
+        {return new DecrementStatement(target, delta);}
     )
 }
 

@@ -12,7 +12,7 @@ Here are some of the full language features not implemented in this subset:
 * Codepoint escapes in character and string literals
 * Object types and literals
 * Streams for reading and writing
-* Increment and decrement statements
+* Increment and decrement statements                        - Added
 * Parallel assignment
 * Exceptions
 * Timers                                                    - Added
