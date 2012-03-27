@@ -16,6 +16,10 @@ my a09 is "a long string"
 
 my a10 is a truth value list list list list list list list
 
+-- Used to test left shifted and right shifted
+my a11 is a number
+my a12 is a number
+
 read a01
 read a02
 read a09
@@ -93,3 +97,11 @@ decrement a01 by 1
 -- Testing divided by and modulo
 set a05 to 5 divided by 3
 set a05 to 3 modulo 1
+
+-- Testing right shifted and left shifted
+if 1000 > 3 left shifted 1:
+  do nothing
+end
+if 1000 > 3 right shifted 1:
+  do nothing
+end

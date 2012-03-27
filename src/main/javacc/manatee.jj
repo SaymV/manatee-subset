@@ -56,7 +56,7 @@ TOKEN: {
     | ":" | "," | "+" | "-" | "*" | "/" | "<<" | ">>"
     | "<" | "<=" | "=" | "≠" | ">=" | ">" | "(" | ")" | "[" | "]"
     | "after" | "seconds" | "unless" | "until" | "increment" | "decrement"
-    | "divided by" | "modulo"
+    | "divided by" | "modulo" | "left shifted" | "right shifted"
 |
     < BR: "\n" | "\r" | "\r\n" >
 |
@@ -692,14 +692,14 @@ String RELOP(): {
     "is" {return "is";}
 }
 
-// ----------------------
-// SHIFTOP -> '<<' | '>>'
-// ----------------------
+// ----------------------------------------------------------
+// SHIFTOP -> '<<' | '>>' | "right shifted" | "left shifted"
+// ----------------------------------------------------------
 
 String SHIFTOP(): {
     Token t;
 }{
-    (t = "<<" | t = ">>")
+    (t = "<<" | t = ">>" | t = "right shifted" | t = "left shifted")
     {return t.image;}
 }
 
