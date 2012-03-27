@@ -9,16 +9,16 @@ Manatee is described at http://cs.lmu.edu/~ray/notes/manatee.
 Here are some of the full language features not implemented in this subset:
 
 * Modules
-* Codepoint escapes in character and string literals
+* Codepoint escapes in character and string literals        - Help?
 * Object types and literals
 * Streams for reading and writing
 * Increment and decrement statements                        - Added
 * Parallel assignment
-* Exceptions
+* Exceptions                                                - Help?
 * Timers                                                    - Added
 * `unless` and `until` modifiers                            - Added
 * Bitwise operators
-* Modulo operator
-* Divides operator
+* Modulo operator                                           - Added
+* Divides operator                                          - Added
 * Bitwise complement operator
 

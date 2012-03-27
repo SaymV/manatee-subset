@@ -56,6 +56,7 @@ TOKEN: {
     | ":" | "," | "+" | "-" | "*" | "/" | "<<" | ">>"
     | "<" | "<=" | "=" | "≠" | ">=" | ">" | "(" | ")" | "[" | "]"
     | "after" | "seconds" | "unless" | "until" | "increment" | "decrement"
+    | "divided by" | "modulo"
 |
     < BR: "\n" | "\r" | "\r\n" >
 |
@@ -713,14 +714,14 @@ String ADDOP(): {
     {return t.image;}
 }
 
-// ------------------
-// MULOP -> '*' | '/'
-// ------------------
+// ---------------------------------------------
+// MULOP -> '*' | '/' | "modulo" | "divided by"
+// ---------------------------------------------
 
 String MULOP(): {
     Token t;
 }{
-    (t = "*" | t = "/")
+    (t = "*" | t = "/" | t = "divided by" | t = "modulo")
     {return t.image;}
 }
 

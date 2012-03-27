@@ -47,7 +47,7 @@ public class BinaryExpression extends Expression {
         right.analyze(log, table, owner, inLoop);
 
         // num op num (for arithmetic op)
-        if (op.matches("[-+*/]")) {
+        if (op.matches("[-+*/]|divided by|modulo")) {
             left.assertArithmetic(op, log);
             right.assertArithmetic(op, log);
             type = (left.type == Type.NUMBER || right.type == Type.NUMBER)

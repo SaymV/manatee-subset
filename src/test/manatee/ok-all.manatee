@@ -89,3 +89,7 @@ do sort(array) until 1 < 3
 set a01 to 5
 increment a01 by 1
 decrement a01 by 1
+
+-- Testing divided by and modulo
+set a05 to 5 divided by 3
+set a05 to 3 modulo 1
