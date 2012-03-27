@@ -55,7 +55,7 @@ TOKEN: {
     | "yes" | "no" | "not" | "length" | "of"
     | ":" | "," | "+" | "-" | "*" | "/" | "<<" | ">>"
     | "<" | "<=" | "=" | "≠" | ">=" | ">" | "(" | ")" | "[" | "]"
-    | "after" | "seconds"
+    | "after" | "seconds" | "unless" | "until"
 |
     < BR: "\n" | "\r" | "\r\n" >
 |
@@ -365,9 +365,9 @@ Statement SIMPLESTMT(): {
     )
 }
 
-// ----------------------------
-// MODIFIER -> (if | while) EXP
-// ----------------------------
+// ----------------------------------------------
+// MODIFIER -> (if | while | unless | until) EXP
+// ----------------------------------------------
 
 ModifiedStatement.Modifier MODIFIER(): {
     ModifiedStatement.ModifierType m;
@@ -377,6 +377,10 @@ ModifiedStatement.Modifier MODIFIER(): {
         "if" {m = ModifiedStatement.ModifierType.IF;}
     |
         "while" {m = ModifiedStatement.ModifierType.WHILE;}
+    |
+        "unless" {m = ModifiedStatement.ModifierType.UNLESS;}
+    |
+        "until" {m = ModifiedStatement.ModifierType.UNTIL;}
     )
     e = EXP()
     {return new ModifiedStatement.Modifier(m, e);}

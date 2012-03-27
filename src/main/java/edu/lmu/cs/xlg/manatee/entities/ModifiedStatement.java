@@ -4,7 +4,7 @@ import edu.lmu.cs.xlg.util.Log;
 
 public class ModifiedStatement extends Statement {
 
-    public static enum ModifierType {IF, WHILE};
+    public static enum ModifierType {IF, WHILE, UNLESS, UNTIL};
 
     public static class Modifier extends Entity {
         ModifierType type;
