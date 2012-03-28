@@ -14,7 +14,7 @@ Here are some of the full language features not implemented in this subset:
 * Streams for reading and writing
 * Increment and decrement statements                        - Added
 * Parallel assignment
-* Exceptions                                                - Help?
+* Exceptions                                                - Added
 * Timers                                                    - Added
 * `unless` and `until` modifiers                            - Added
 * Bitwise operators                                         - Added

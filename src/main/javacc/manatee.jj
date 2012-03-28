@@ -57,6 +57,7 @@ TOKEN: {
     | "<" | "<=" | "=" | "≠" | ">=" | ">" | "(" | ")" | "[" | "]"
     | "after" | "seconds" | "unless" | "until" | "increment" | "decrement"
     | "divided by" | "modulo" | "left shifted" | "right shifted"
+    | "try" | "recover"
 |
     < BR: "\n" | "\r" | "\r\n" >
 |
@@ -399,6 +400,7 @@ ModifiedStatement.Modifier MODIFIER(): {
 // --------------------------
 // COMPLEXSTMT -> CONDITIONAL
 //             |  LOOP
+//             |  try
 // --------------------------
 
 Statement COMPLEXSTMT(): {
@@ -408,6 +410,8 @@ Statement COMPLEXSTMT(): {
         s = CONDITIONAL()
     |
         s = LOOP()
+    |
+        s = TRY()
     )
     {return s;}
 }
@@ -469,6 +473,18 @@ Statement LOOP(): {
             }
         }
     )
+}
+
+// -----------------------------------
+// TRY -> try BLOCK recover BLOCK end
+// -----------------------------------
+
+Statement TRY(): { // We've added parsing rules and syntax checking
+    Block tryBlock;
+    Block recoverBlock;
+}{
+    "try" tryBlock = BLOCK() "recover" recoverBlock = BLOCK() "end"
+    { return new TryStatement(tryBlock, recoverBlock); }
 }
 
 // ----------------------

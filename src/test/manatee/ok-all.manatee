@@ -105,3 +105,10 @@ end
 if 1000 > 3 right shifted 1:
   do nothing
 end
+
+-- Testing exceptions
+try:
+    do nothing
+recover:
+    do nothing
+end
