@@ -27,6 +27,7 @@ import edu.lmu.cs.xlg.util.Log;
  *         Script
  *     Type
  *         ArrayType (baseType*)
+ *         ObjectType (property*)
  *     Statement
  *         Declaration (name)
  *             Variable (typeName, initializer, constant, type*)

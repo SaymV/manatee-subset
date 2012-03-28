@@ -12,6 +12,7 @@ public class Type extends Declaration {
     public static final Type TRUTH_VALUE = new Type("truth value");
     public static final Type CHARACTER = new Type("character");
     public static final Type STRING = new Type("string");
+    public static final Type LIST = new Type("list");
 
     /**
      * An internal type for functions.

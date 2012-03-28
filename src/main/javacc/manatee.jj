@@ -57,7 +57,7 @@ TOKEN: {
     | "<" | "<=" | "=" | "≠" | ">=" | ">" | "(" | ")" | "[" | "]"
     | "after" | "seconds" | "unless" | "until" | "increment" | "decrement"
     | "divided by" | "modulo" | "left shifted" | "right shifted"
-    | "try" | "recover"
+    | "try" | "recover" | "has"
 |
     < BR: "\n" | "\r" | "\r\n" >
 |
@@ -191,9 +191,9 @@ Statement STMT(): {
     {return s;}
 }
 
-// ---------------------------------
-// DEC -> VARDEC | PROCDEC | FUNCDEC
-// ---------------------------------
+// --------------------------------------------
+// DEC -> VARDEC | PROCDEC | FUNCDEC | TYPEDEC
+// --------------------------------------------
 
 Statement DEC(): {
     Statement s;
@@ -204,6 +204,8 @@ Statement DEC(): {
         LOOKAHEAD(2) s = FUNDEC()
     |
         s = PROCDEC()
+    |
+        s = TYPEDEC() // May need LOOKAHEAD(2) ***
     )
     {return s;}
 }
@@ -256,6 +258,27 @@ String TYPE(): {
         LOOKAHEAD(2) "list" {builder.append(" list");}
     )*
     {return builder.toString();}
+}
+
+// ---------------------------------------------------------------
+// TYPEDEC -> (a | an) ID has ':' BR+ ((a | an) TYPE ID BR+)+ end
+// ---------------------------------------------------------------
+
+Type TYPEDEC(): {
+    List<ObjectType.Property> properties = new ArrayList<ObjectType.Property>();
+    Token name;
+    String propertyType;
+    Token propertyName;
+}{
+    ("a" | "an") name = <ID> "has" ":" (<BR>)+
+    (
+        ("a" | "an") propertyType = TYPE() propertyName = <ID>
+        {properties.add(new ObjectType.Property(propertyName.image,
+            propertyType));}
+        (<BR>)+
+    )+
+    "end"
+    {return new ObjectType(name.image, properties);}
 }
 
 // ----------------------------------

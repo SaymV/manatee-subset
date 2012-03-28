@@ -112,3 +112,9 @@ try:
 recover:
     do nothing
 end
+
+-- Testing objects
+a point has:             -- declares type point
+    a number x           -- declares property x of type point
+    a number y           -- declares property y of type point
+end
