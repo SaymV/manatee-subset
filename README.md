@@ -8,7 +8,7 @@ Manatee is described at http://cs.lmu.edu/~ray/notes/manatee.
 
 Here are some of the full language features not implemented in this subset:
 
-* Modules
+* Modules                                                   - Added
 * Codepoint escapes in character and string literals        - Added
 * Object types and literals                                 - Added
 * Increment and decrement statements                        - Added
@@ -19,4 +19,4 @@ Here are some of the full language features not implemented in this subset:
 * Bitwise operators                                         - Added
 * Modulo operator                                           - Added
 * Divides operator                                          - Added
-* Bitwise complement operator
+* Bitwise complement operator                               - Added

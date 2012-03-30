@@ -57,7 +57,7 @@ TOKEN: {
     | "<" | "<=" | "=" | "≠" | ">=" | ">" | "(" | ")" | "[" | "]"
     | "after" | "second" | "seconds" | "unless" | "until" | "increment" | "decrement"
     | "divided by" | "modulo" | "left shifted" | "right shifted"
-    | "try" | "recover" | "has" | "bit" | "xor"
+    | "try" | "recover" | "has" | "bit" | "xor" | "complement" | "use" | "module"
 |
     < BR: "\n" | "\r" | "\r\n" >
 |
@@ -73,6 +73,8 @@ TOKEN: {
             ~["'", "\\" ,"\u0000"-"\u001f", "\u007f"-"\u009f"]
         |
             "\\" ["n", "t", "\"", "\'", "\\"]
+        |
+            "\\u{" (["0"-"9"]|["a"-"f"]){4} "}"
         )
         "'"
     >
@@ -160,17 +162,32 @@ TOKEN: {
 }
 
 // -------------------
-// SCRIPT -> BR* STMT+
+// SCRIPT -> BR* IMPORT* STMT+
 // -------------------
 
 Script SCRIPT(): {
     List<Statement> statements = new ArrayList<Statement>();
+    List<ImportStatement> imports = new ArrayList<ImportStatement>();
     Statement s;
+    ImportStatement i;
 }{
     (<BR>)*
+    (i = IMPORT() {imports.add(i);})*
     (s = STMT() {statements.add(s);})+
     <EOF>
     {return new Script(statements);}
+}
+
+// -------------------
+// IMPORT -> use module ID BR+
+// -------------------
+
+ImportStatement IMPORT(): {
+    Token t = null;
+}{
+    ("use" "module" t = <ID>)
+    (<BR>)+
+    {return new ImportStatement(t.image);}
 }
 
 // -----------------------------------------------------
@@ -805,13 +822,13 @@ String MULOP(): {
     {return t.image;}
 }
 
-// -------------------------------
-// PREFIX -> '-' | not | length of
-// -------------------------------
+// ------------------------------------------------
+// PREFIX -> '-' | not | length of | complement of
+// ------------------------------------------------
 
 String PREFIX(): {
     Token t;
 }{
-    (t = "-" | t = "not" | t = "length" "of")
+    (t = "-" | t = "not" | t = "length" "of" | t = "complement" "of")
     {return t.image;}
 }

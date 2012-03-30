@@ -40,7 +40,10 @@ public class UnaryExpression extends Expression {
             operand.assertBoolean(op, log);
             type = Type.TRUTH_VALUE;
 
-        } else if ("-".equals(op)) {
+        } else if ("complement".equals(op)) {
+        	operand.assertArithmetic(op, log);
+        	type = operand.getType();
+    	} else if ("-".equals(op)) {
             operand.assertArithmetic(op, log);
             type = operand.getType();
 

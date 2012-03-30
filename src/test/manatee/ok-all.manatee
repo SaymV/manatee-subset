@@ -3,6 +3,10 @@
 
 -- It is not there yet.
 
+-- Testing import statements
+use module manatee
+use module whatever
+
 my a01 is a whole number
 my a02 is a truth value
 my a03 is a character
@@ -123,9 +127,13 @@ a point has:             -- declares type point
 end
 
 -- Testing bit and, or, and xor
-write 5 bit or 1
-write 5 bit xor 1
-write 5 bit and 1
+my a14 is 5
+write a14 bit or 1
+write a14 bit xor 1
+write a14 bit and 1
 
 -- Testing codepoint escapes in string literals
 set a13 to "yo sam \u{0000}"
+
+-- Testing bitwise complement
+write complement of 36
