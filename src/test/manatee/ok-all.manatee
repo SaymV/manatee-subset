@@ -20,6 +20,9 @@ my a10 is a truth value list list list list list list list
 my a11 is a number
 my a12 is a number
 
+-- Used to test codepoint escapes in string literals
+my a13 is a string
+
 read a01
 read a02
 read a09
@@ -118,3 +121,11 @@ a point has:             -- declares type point
     a number x           -- declares property x of type point
     a number y           -- declares property y of type point
 end
+
+-- Testing bit and, or, and xor
+write 5 bit or 1
+write 5 bit xor 1
+write 5 bit and 1
+
+-- Testing codepoint escapes in string literals
+set a13 to "yo sam \u{0000}"

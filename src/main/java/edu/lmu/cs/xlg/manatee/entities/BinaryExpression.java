@@ -54,7 +54,7 @@ public class BinaryExpression extends Expression {
                 ? Type.NUMBER : Type.WHOLE_NUMBER;
 
         // int op int returning int (for shifts and mod)
-        } else if (op.matches("<<|>>|right shifted|left shifted")) {
+        } else if (op.matches("<<|>>|right shifted|left shifted|bit or|bit xor|bit and")) {
             left.assertInteger(op, log);
             right.assertInteger(op, log);
             type = Type.WHOLE_NUMBER;

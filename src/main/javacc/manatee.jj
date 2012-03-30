@@ -55,9 +55,9 @@ TOKEN: {
     | "yes" | "no" | "not" | "length" | "of"
     | ":" | "," | "+" | "-" | "*" | "/" | "<<" | ">>"
     | "<" | "<=" | "=" | "≠" | ">=" | ">" | "(" | ")" | "[" | "]"
-    | "after" | "seconds" | "unless" | "until" | "increment" | "decrement"
+    | "after" | "second" | "seconds" | "unless" | "until" | "increment" | "decrement"
     | "divided by" | "modulo" | "left shifted" | "right shifted"
-    | "try" | "recover" | "has"
+    | "try" | "recover" | "has" | "bit" | "xor"
 |
     < BR: "\n" | "\r" | "\r\n" >
 |
@@ -83,6 +83,8 @@ TOKEN: {
             ~["\"", "\\" ,"\u0000"-"\u001f", "\u007f"-"\u009f"]
         |
             "\\" ["n", "t", "\"", "\'", "\\"]
+        |
+            "\\u{" (["0"-"9"]|["a"-"f"]){4} "}"
         )*
         "\""
     >
@@ -388,7 +390,7 @@ Statement SIMPLESTMT(): {
         LOOKAHEAD(2) "do" "nothing"
         {return new DoNothingStatement();}
     |
-        "do" t = <ID> args = EXPLIST() ("after" delay = EXP() "seconds")?
+        "do" t = <ID> args = EXPLIST() ("after" delay = EXP() ("seconds" | "second"))?
         {return new CallStatement(t.image, args, delay);}
     |
         "increment" target = EXP() ("by" delta = EXP())?
@@ -502,7 +504,7 @@ Statement LOOP(): {
 // TRY -> try BLOCK recover BLOCK end
 // -----------------------------------
 
-Statement TRY(): { // We've added parsing rules and syntax checking
+Statement TRY(): {
     Block tryBlock;
     Block recoverBlock;
 }{
@@ -531,8 +533,47 @@ Expression EXP1(): {
     Expression e1;
     Expression e2;
 }{
+    e1 = EXP2()
+    ("and" e2 = EXP2() {e1 = new BinaryExpression(e1, "and", e2);})*
+    {return e1;}
+}
+
+// ------------------------
+// EXP2 -> EXP3 (bit or EXP3)*
+// ------------------------
+
+Expression EXP2(): {
+    Expression e1;
+    Expression e2;
+}{
+    e1 = EXP3()
+    (LOOKAHEAD(2) "bit" "or" e2 = EXP3() {e1 = new BinaryExpression(e1, "bit or", e2);})*
+    {return e1;}
+}
+
+// ------------------------
+// EXP3 -> EXP4 (bit xor EXP4)*
+// ------------------------
+
+Expression EXP3(): {
+    Expression e1;
+    Expression e2;
+}{
+    e1 = EXP4()
+    (LOOKAHEAD(2) "bit" "xor" e2 = EXP4() {e1 = new BinaryExpression(e1, "bit xor", e2);})*
+    {return e1;}
+}
+
+// ------------------------
+// EXP4 -> EXP5 (bit and EXP5)*
+// ------------------------
+
+Expression EXP4(): {
+    Expression e1;
+    Expression e2;
+}{
     e1 = EXP5()
-    ("and" e2 = EXP5() {e1 = new BinaryExpression(e1, "and", e2);})*
+    (LOOKAHEAD(2) "bit" "and" e2 = EXP5() {e1 = new BinaryExpression(e1, "bit and", e2);})*
     {return e1;}
 }
 
