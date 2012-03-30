@@ -79,9 +79,12 @@ public class ManateeToJavaScriptGenerator extends Generator {
 
         } else if (s instanceof AssignmentStatement) {
             AssignmentStatement a = AssignmentStatement.class.cast(s);
-            String target = generateExpression(a.getTarget());
-            String source = generateExpression(a.getSource());
-            emit(String.format("%s = %s;", target, source));
+            String target, source;
+            for (int i = 0; i < a.getTargetLength(); i++) {
+	            target = generateExpression(a.getTarget(i));
+	            source = generateExpression(a.getSource(i));
+	            emit(String.format("%s = %s;", target, source));
+            }
 
         } else if (s instanceof ReadStatement) {
             // TODO

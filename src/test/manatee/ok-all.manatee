@@ -137,3 +137,8 @@ set a13 to "yo sam \u{0000}"
 
 -- Testing bitwise complement
 write complement of 36
+
+-- Testing parallel assignment
+my a15 is 0
+my a16 is 0
+set a15, a16 to 1, 2

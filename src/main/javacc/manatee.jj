@@ -229,10 +229,10 @@ Statement DEC(): {
     {return s;}
 }
 
-// --------------------------------
+// ------------------------------------------------------------
 // VARDEC -> my ID is always? EXP
 //        |  my ID is (a | an) TYPE
-// --------------------------------
+// ------------------------------------------------------------
 
 Variable VARDEC(): {
     String t = null;
@@ -384,6 +384,8 @@ Statement SIMPLESTMT(): {
     Token t = null;
     Expression source;
     Expression target;
+    ArrayList<Expression> src = new ArrayList();
+    ArrayList<Expression> tgt = new ArrayList();
     Expression delay = null;
     Expression delta = null;
     List<Expression> args = new ArrayList<Expression>();
@@ -395,8 +397,8 @@ Statement SIMPLESTMT(): {
         "read" e = EXP()
         {return new ReadStatement(e);}
     |
-        "set" target = EXP() "to" source = EXP()
-        {return new AssignmentStatement(target, source);}
+        "set" target = EXP() {tgt.add(target);} ("," target = EXP() {tgt.add(target);})* "to" source = EXP() {src.add(source);} ("," source = EXP() {src.add(source);})*
+        {return new AssignmentStatement(tgt, src);}
     |
         "exit" "the" "loop"
         {return new ExitStatement();}
