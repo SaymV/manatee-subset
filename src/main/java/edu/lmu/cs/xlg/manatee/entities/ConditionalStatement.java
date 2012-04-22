@@ -21,6 +21,22 @@ public class ConditionalStatement extends Statement {
             condition.assertBoolean("condition", log);
             block.analyze(log, table, owner, inLoop);
         }
+
+        public Block getBlock() {
+            return this.block;
+        }
+
+        public Expression getCondition() {
+            return condition;
+        }
+
+        public void setCondition(Expression condition) {
+            this.condition = condition;
+        }
+
+        public void setBlock(Block block) {
+            this.block = block;
+        }
     }
 
     private List<Arm> arms;

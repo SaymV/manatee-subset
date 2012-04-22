@@ -15,6 +15,7 @@ import edu.lmu.cs.xlg.manatee.entities.CallStatement;
 import edu.lmu.cs.xlg.manatee.entities.CharacterLiteral;
 import edu.lmu.cs.xlg.manatee.entities.CollectionLoop;
 import edu.lmu.cs.xlg.manatee.entities.ConditionalStatement;
+import edu.lmu.cs.xlg.manatee.entities.ConditionalStatement.Arm;
 import edu.lmu.cs.xlg.manatee.entities.Declaration;
 import edu.lmu.cs.xlg.manatee.entities.DoNothingStatement;
 import edu.lmu.cs.xlg.manatee.entities.ExitStatement;
@@ -87,8 +88,9 @@ public class ManateeToJavaScriptGenerator extends Generator {
             }
 
         } else if (s instanceof ReadStatement) {
-            // TODO
-            emit("// READ STATEMENTS NOT YET HANDLED");
+            // What exactly does the ReadStatement do?
+            Expression e = ReadStatement.class.cast(s).getExpression();
+            emit("console.log(" + generateExpression(e) + ");");
 
         } else if (s instanceof WriteStatement) {
             Expression e = WriteStatement.class.cast(s).getExpression();
@@ -126,8 +128,7 @@ public class ManateeToJavaScriptGenerator extends Generator {
             emit("}");
 
         } else if (s instanceof ConditionalStatement) {
-            // TODO
-            emit("// CONDITIONAL STATEMENTS NOT YET HANDLED");
+            generateConditionalStatement(ConditionalStatement.class.cast(s));
 
         } else if (s instanceof PlainLoop) {
             emit("while (true) {");
@@ -143,9 +144,14 @@ public class ManateeToJavaScriptGenerator extends Generator {
             emit("}");
 
         } else if (s instanceof CollectionLoop) {
-            // TODO
-            emit("// COLLECTION LOOPS NOT YET HANDLED");
-
+            // Under construction
+            
+            /*CollectionLoop ballsDeep = CollectionLoop.class.cast(s);
+            String iterator = ballsDeep.getIteratorName();
+            Variable v = ballsDeep.getBody().getTable().lookUp(iterator, log);
+            emit(String.format("for (%s in %s) {", id(v), generateExpression(ballsDeep.getCollection())));
+            generateBlock(ballsDeep.getBody());
+            emit("}");*/
         } else if (s instanceof RangeLoop) {
             // TODO
             emit("// RANGE LOOPS NOT YET HANDLED");
@@ -158,6 +164,26 @@ public class ManateeToJavaScriptGenerator extends Generator {
         }
     }
 
+    private void generateConditionalStatement(ConditionalStatement s) {
+        if (s.getArms() == null || s.getArms().isEmpty()) {
+            throw new RuntimeException("INTERNAL ERROR: ANALYZER IS HORKED, " + 
+                "MADE EMPTY CONDITIONAL");
+        }
+        boolean firstArm = true;
+        for (Arm arm: s.getArms()) {
+            String lead = firstArm ? "if" : "} else if";
+            emit(lead + " (" + generateExpression(arm.getCondition()) + ") {");
+            generateBlock(arm.getBlock());
+            firstArm = false;
+        }
+        if (s.getElsePart() != null) {
+            emit("} else {");
+            generateBlock(s.getElsePart());
+            emit("}");
+        }
+        emit("}");
+    }
+    
     /**
      * Returns a JavaScript expression for the given Manatee expression.
      */
@@ -235,10 +261,10 @@ public class ManateeToJavaScriptGenerator extends Generator {
             return "true";
 
         } else if (e instanceof CharacterLiteral) {
-            return "TODO_CHAR_LITERAL";
+            return e.getLexeme();
 
         } else if (e instanceof StringLiteral) {
-            return "TODO_STRING_LITERAL";
+            return e.getLexeme();
 
         } else if (e instanceof NumberLiteral) {
             return NumberLiteral.class.cast(e).getValue() + "";

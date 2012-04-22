@@ -15,10 +15,8 @@ public class ImportStatement extends Statement {
 	}
 
 	@Override
-	public void analyze(Log log, SymbolTable table, Subroutine owner,
-			boolean inLoop) {
-		// TODO
-
+	public void analyze(Log log, SymbolTable table, Subroutine owner, boolean inLoop) {
+		// Have to check to see if the module exists
 	}
 
 }
