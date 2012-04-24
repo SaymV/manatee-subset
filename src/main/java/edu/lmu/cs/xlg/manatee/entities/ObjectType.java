@@ -6,7 +6,7 @@ import java.util.List;
 import edu.lmu.cs.xlg.util.Log;
 
 public class ObjectType extends Type {
-    List<Property> properties;
+    private List<Property> properties;
     
     public static class Property extends Entity {
         String name;
@@ -22,11 +22,13 @@ public class ObjectType extends Type {
             this.type = new Type(type);
         }
         
-        /*
-         * 
-         * new ObjectType.Property(propertyName.image,
-            propertyType)
-         */
+        public String getName() {
+            return name;
+        }
+    }
+    
+    public List<Property> getProperties() {
+        return properties;
     }
     
     public void analyze(Log log, SymbolTable table, Subroutine owner, boolean inLoop) {
@@ -38,6 +40,7 @@ public class ObjectType extends Type {
                 history.add(p.name);
             }
         }
+        table.insert(this, log);
     }
     
     public ObjectType(String name, List<Property> properties) {

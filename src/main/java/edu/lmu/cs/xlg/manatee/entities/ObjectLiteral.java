@@ -15,12 +15,11 @@ public class ObjectLiteral extends Expression {
     
     public static class Arg {
         private String key;
-        private Type type;
+        private Type type;        // This needs to be set in the analyzer
         private Expression value; // ERRTHANG extends Expression
         
         public Arg(String key, Expression value) {
             this.key = key;
-            this.type = value.getType();
             this.value = value;
         }
 
@@ -34,6 +33,10 @@ public class ObjectLiteral extends Expression {
 
         public Expression getValue() {
             return value;
+        }
+        
+        public void analyze(Log log, SymbolTable table, Subroutine owner, boolean inLoop) {
+            // TODO: Type needs to be set and checked for in the symbol table
         }
     }
     
@@ -52,7 +55,34 @@ public class ObjectLiteral extends Expression {
     
     @Override
     public void analyze(Log log, SymbolTable table, Subroutine owner, boolean inLoop) {
-        // Intentionally empty.
+        Type t = table.lookupType(typeName, log);
+        ObjectType o = ObjectType.class.cast(t);
+        // Used to represent all properties not found yet in args
+        ArrayList<String> unfoundProperties = new ArrayList<String>();
+        if (t == null) {
+            log.error("Undefined type.");
+        }
+        if (o.getProperties().size() != args.size()) {
+            log.error("Size conflict with expected object properties.");
+        }
+        // Populate unfound properties list
+        for (ObjectType.Property p: o.getProperties()) {
+            unfoundProperties.add(p.getName());
+        }
+        // Search args for unfound properties
+        for (Arg a: args) {
+            if (unfoundProperties.contains(a.getKey())) {
+                // TODO: must verify that property and arg types match
+                // If property found, remove it from unfound properties list
+                unfoundProperties.remove(a.getKey());
+            } else {
+                log.error("Duplicate property or not in properties.");
+            }
+        }
+        // If any unfound properties in args, log error
+        if (unfoundProperties.size() > 0) {
+            log.error("Unassigned properties.");
+        }
     }
     
 }
