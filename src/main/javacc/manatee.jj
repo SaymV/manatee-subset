@@ -705,18 +705,20 @@ Expression EXP10(): {
 //       |  ID
 //       |  '[' EXPLIST? ']'
 //       |  '(' EXP ')'
+//       |  ID '{' ID ':' EXP (',' ID ':' EXP)* '}'
 // -------------------------
 
 Expression EXP11(): {
     List<Expression> expressions = new ArrayList<Expression>();
     Expression e = null;
-    Token t;
+    Token t, u;
+    ArrayList<ObjectLiteral.Arg> args = new ArrayList<ObjectLiteral.Arg>();
 }{
     (
         e = LITERAL()
         {return e;}
     |
-        t = <ID>
+        LOOKAHEAD(2) t = <ID>
         {return new IdentifierExpression(t.image);}
     |
         "[" (expressions = EXPLIST())? "]"
@@ -724,6 +726,10 @@ Expression EXP11(): {
     |
         "(" e = EXP() ")"
         {return e;}
+    |
+        LOOKAHEAD(2) t = <ID> "{" u = <ID> ":" e = EXP() {args.add(new ObjectLiteral.Arg(u.image, e));}
+            ("," u = <ID> ":" e = EXP() {args.add(new ObjectLiteral.Arg(u.image, e));})* "}"
+        {return new ObjectLiteral(t.image, args);}
     )
 }
 
