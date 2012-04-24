@@ -29,8 +29,12 @@ public class NumberLiteral extends Literal {
     @Override
     public void analyze(Log log, SymbolTable table, Subroutine owner, boolean inLoop) {
         type = Type.NUMBER;
+        String lexeme = getLexeme();
         try {
-            value = Double.valueOf(getLexeme());
+            if (lexeme.contains("^")) {
+                lexeme = lexeme.replaceAll("(x|\\xd7)10\\^", "E");
+            }
+            value = Double.valueOf(lexeme);
         } catch (NumberFormatException e) {
             log.error("bad_number", getLexeme());
         }

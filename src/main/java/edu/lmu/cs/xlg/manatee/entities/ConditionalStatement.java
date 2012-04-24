@@ -15,19 +15,19 @@ public class ConditionalStatement extends Statement {
             this.block = block;
         }
 
+        public Expression getCondition() {
+            return condition;
+        }
+
+        public Block getBlock() {
+            return block;
+        }
+
         @Override
         public void analyze(Log log, SymbolTable table, Subroutine owner, boolean inLoop) {
             condition.analyze(log, table, owner, inLoop);
             condition.assertBoolean("condition", log);
             block.analyze(log, table, owner, inLoop);
-        }
-
-        public Block getBlock() {
-            return this.block;
-        }
-
-        public Expression getCondition() {
-            return condition;
         }
 
         public void setCondition(Expression condition) {

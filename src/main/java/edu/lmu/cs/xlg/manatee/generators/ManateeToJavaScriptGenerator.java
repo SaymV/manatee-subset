@@ -42,6 +42,7 @@ import edu.lmu.cs.xlg.manatee.entities.Variable;
 import edu.lmu.cs.xlg.manatee.entities.WhileLoop;
 import edu.lmu.cs.xlg.manatee.entities.WholeNumberLiteral;
 import edu.lmu.cs.xlg.manatee.entities.WriteStatement;
+import edu.lmu.cs.xlg.manatee.entities.ConditionalStatement.Arm;
 
 /**
  * A generator that translates an Manatee program into JavaScript.
@@ -139,22 +140,32 @@ public class ManateeToJavaScriptGenerator extends Generator {
             TimesLoop t = TimesLoop.class.cast(s);
             Variable v = new Variable("", Type.WHOLE_NUMBER);
             String count = generateExpression(t.getCount());
-            emit(String.format("for (var %s = %s; %s > 0; %s--) {", id(v), count, id(v), id(v)));
+            emit(String.format("for (var %s = %s; %s > 0; %s--) {",
+                    id(v), count, id(v), id(v)));
             generateBlock(t.getBody());
             emit("}");
 
         } else if (s instanceof CollectionLoop) {
-            // Under construction
-            
-            /*CollectionLoop ballsDeep = CollectionLoop.class.cast(s);
-            String iterator = ballsDeep.getIteratorName();
-            Variable v = ballsDeep.getBody().getTable().lookUp(iterator, log);
-            emit(String.format("for (%s in %s) {", id(v), generateExpression(ballsDeep.getCollection())));
-            generateBlock(ballsDeep.getBody());
-            emit("}");*/
+            CollectionLoop c = CollectionLoop.class.cast(s);
+            String index = id(c.getIterator());
+            String collection = generateExpression(c.getCollection());
+            emit(String.format("%s%s.forEach(function (%s) {",
+                    collection,
+                    c.getCollection().getType() == Type.STRING ? ".split('')" : "",
+                    index));
+            generateBlock(c.getBody());
+            emit("});");
+
         } else if (s instanceof RangeLoop) {
-            // TODO
-            emit("// RANGE LOOPS NOT YET HANDLED");
+            RangeLoop r = RangeLoop.class.cast(s);
+            String index = id(r.getIterator());
+            String low = generateExpression(r.getLow());
+            String high = generateExpression(r.getHigh());
+            String step = r.getStep() == null ? "1" : generateExpression(r.getStep());
+            emit(String.format("for (var %s = %s; %s <= %s; %s += %s) {",
+                    index, low, index, high, index, step));
+            generateBlock(r.getBody());
+            emit("}");
 
         } else if (s instanceof WhileLoop) {
             WhileLoop w = WhileLoop.class.cast(s);
@@ -163,11 +174,13 @@ public class ManateeToJavaScriptGenerator extends Generator {
             emit("}");
         }
     }
-
+    
+    /**
+     * Generates JavaScript code for conditional statement s.
+     */
     private void generateConditionalStatement(ConditionalStatement s) {
         if (s.getArms() == null || s.getArms().isEmpty()) {
-            throw new RuntimeException("INTERNAL ERROR: ANALYZER IS HORKED, " + 
-                "MADE EMPTY CONDITIONAL");
+            throw new RuntimeException("INTERNAL ERROR: ANALYZER IS HORKED, MADE EMPTY CONDITIONAL");
         }
         boolean firstArm = true;
         for (Arm arm: s.getArms()) {
@@ -179,11 +192,10 @@ public class ManateeToJavaScriptGenerator extends Generator {
         if (s.getElsePart() != null) {
             emit("} else {");
             generateBlock(s.getElsePart());
-            emit("}");
         }
         emit("}");
     }
-    
+
     /**
      * Returns a JavaScript expression for the given Manatee expression.
      */
