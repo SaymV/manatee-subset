@@ -718,7 +718,11 @@ Expression EXP11(): {
         e = LITERAL()
         {return e;}
     |
-        LOOKAHEAD(2) t = <ID>
+        LOOKAHEAD(2) t = <ID> "{" u = <ID> ":" e = EXP() {args.add(new ObjectLiteral.Arg(u.image, e));}
+            ("," u = <ID> ":" e = EXP() {args.add(new ObjectLiteral.Arg(u.image, e));})* "}"
+        {return new ObjectLiteral(t.image, args);}
+    |
+        t = <ID>
         {return new IdentifierExpression(t.image);}
     |
         "[" (expressions = EXPLIST())? "]"
@@ -726,10 +730,6 @@ Expression EXP11(): {
     |
         "(" e = EXP() ")"
         {return e;}
-    |
-        LOOKAHEAD(2) t = <ID> "{" u = <ID> ":" e = EXP() {args.add(new ObjectLiteral.Arg(u.image, e));}
-            ("," u = <ID> ":" e = EXP() {args.add(new ObjectLiteral.Arg(u.image, e));})* "}"
-        {return new ObjectLiteral(t.image, args);}
     )
 }
 

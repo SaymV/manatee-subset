@@ -3,6 +3,8 @@ package edu.lmu.cs.xlg.manatee.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.GNOME.Accessibility.Table;
+
 import edu.lmu.cs.xlg.util.Log;
 
 public class ObjectType extends Type {
@@ -24,6 +26,10 @@ public class ObjectType extends Type {
         
         public String getName() {
             return name;
+        }
+        
+        public Type getType() {
+            return type;
         }
     }
     

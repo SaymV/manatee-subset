@@ -85,8 +85,9 @@ public class Type extends Declaration {
      * type.
      */
     public boolean canBeAssignedTo(Type that) {
-        return this == that
-        || this == WHOLE_NUMBER && that == NUMBER
+        return this.getName().equals(that.getName()) //this == that
+        //|| this == WHOLE_NUMBER && that == NUMBER
+        || this.getName().equals("whole number") && that.getName().equals("number")
         || this == NULL_TYPE && that.isReference()
         || this == ARBITRARY_ARRAY && that instanceof ArrayType
         || this == ARBITRARY

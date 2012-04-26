@@ -135,7 +135,7 @@ a point has:             -- declares type point
     a number x           -- declares property x of type point
     a number y           -- declares property y of type point
 end
---my p is a point {x:1, y:1}
+write point {x: 1.1, y: 1.1}
 
 -- Testing bit and, or, and xor
 my a14 is 5

@@ -1,6 +1,7 @@
 package edu.lmu.cs.xlg.manatee.entities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import edu.lmu.cs.xlg.util.Log;
 
@@ -13,7 +14,7 @@ public class ObjectLiteral extends Expression {
         this.args = args;
     }
     
-    public static class Arg {
+    public static class Arg extends Entity {
         private String key;
         private Type type;        // This needs to be set in the analyzer
         private Expression value; // ERRTHANG extends Expression
@@ -35,8 +36,16 @@ public class ObjectLiteral extends Expression {
             return value;
         }
         
+        @Override
         public void analyze(Log log, SymbolTable table, Subroutine owner, boolean inLoop) {
             // TODO: Type needs to be set and checked for in the symbol table
+            value.analyze(log, table, owner, inLoop);
+            Type t = table.lookupType(value.getType().getName(), log);
+            if (t == null) {
+                log.error("Invalid object property type.");
+            } else {
+                type = t;
+            }
         }
     }
     
@@ -57,28 +66,47 @@ public class ObjectLiteral extends Expression {
     public void analyze(Log log, SymbolTable table, Subroutine owner, boolean inLoop) {
         Type t = table.lookupType(typeName, log);
         ObjectType o = ObjectType.class.cast(t);
+        
         // Used to represent all properties not found yet in args
         ArrayList<String> unfoundProperties = new ArrayList<String>();
+        HashMap<String, Type> properties = new HashMap<String, Type>();
+        
         if (t == null) {
             log.error("Undefined type.");
         }
+        
         if (o.getProperties().size() != args.size()) {
             log.error("Size conflict with expected object properties.");
         }
+        
         // Populate unfound properties list
         for (ObjectType.Property p: o.getProperties()) {
             unfoundProperties.add(p.getName());
+            properties.put(p.getName(), p.getType());
         }
+        
         // Search args for unfound properties
         for (Arg a: args) {
             if (unfoundProperties.contains(a.getKey())) {
+                a.analyze(log, table, owner, inLoop);
                 // TODO: must verify that property and arg types match
                 // If property found, remove it from unfound properties list
                 unfoundProperties.remove(a.getKey());
+                Type argType = a.getType();
+                Type propType = properties.get(a.getKey());
+                
+                System.out.println("Type test from " + argType.getName()
+                    + " to " + propType.getName()
+                    + " is " + argType.canBeAssignedTo(propType));
+                
+                if (!argType.canBeAssignedTo(propType)) {
+                    log.error("Object literal type mismatch.");
+                }
             } else {
                 log.error("Duplicate property or not in properties.");
             }
         }
+        
         // If any unfound properties in args, log error
         if (unfoundProperties.size() > 0) {
             log.error("Unassigned properties.");

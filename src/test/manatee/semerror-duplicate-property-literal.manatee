@@ -1,0 +1,6 @@
+an ejaso has:
+    a number age
+    a string name
+end
+
+write ejaso { age: 22, age: "name" }
