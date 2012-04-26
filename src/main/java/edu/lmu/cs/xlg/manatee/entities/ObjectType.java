@@ -21,6 +21,12 @@ public class ObjectType extends Type {
         
         public Property(String name, String type) {
             this.name = name;
+            
+            /* TODO:
+             * We can not create a new Type to be assigned to this property since in the ObjectLiteral
+             * analyzer, the == operator will fail to properly compare the Types. this.type needs to
+             * be assigned to the already-constructed respective Type in the Type class.
+             */
             this.type = new Type(type);
         }
         
