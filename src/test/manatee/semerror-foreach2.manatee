@@ -1,0 +1,5 @@
+-- Testing semantic checking for for each loops
+
+for each i in 1 to "world" by 1:
+  write i
+end
