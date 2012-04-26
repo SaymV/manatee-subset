@@ -1,0 +1,3 @@
+-- Test syntactically incorrect unless statements
+
+do nothing unless

@@ -1,0 +1,5 @@
+-- Testing syntactically incorrect exceptions
+try:
+    do nothing
+recover:
+    do nothing

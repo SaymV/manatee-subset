@@ -1,0 +1,2 @@
+-- Testing semantically incorrect increment statement
+increment "hello" by 1

@@ -1,0 +1,10 @@
+-- Testing right shifted and left shifted
+my a11 is a number
+my a12 is a number
+
+if 1000 > 3 left shifted 1:
+  do nothing
+end
+if 1000 > 3 right shifted 1:
+  do nothing
+end

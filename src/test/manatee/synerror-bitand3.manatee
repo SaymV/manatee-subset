@@ -1,0 +1,2 @@
+-- Testing bitwise and syntax error
+write 5 bit 1

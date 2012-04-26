@@ -1,0 +1,3 @@
+-- Testing codepoint escapes syntax errors
+my a13 is a string
+set a13 to "yo sam \u{0000)"

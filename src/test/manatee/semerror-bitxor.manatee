@@ -1,0 +1,2 @@
+-- Testing bitwise xor semantics
+write "hello" bit xor 3

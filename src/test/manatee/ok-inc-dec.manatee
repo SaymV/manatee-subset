@@ -1,0 +1,6 @@
+-- Testing increment and decrement
+my a01 is a whole number
+
+set a01 to 5
+increment a01 by 1
+decrement a01 by 1

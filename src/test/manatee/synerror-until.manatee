@@ -1,0 +1,3 @@
+-- Test syntactically incorrect until statements
+
+do nothing until ;

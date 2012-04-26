@@ -1,0 +1,2 @@
+-- Testing syntactically incorrect decrement statements
+decrement 1 5

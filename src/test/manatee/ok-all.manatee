@@ -3,10 +3,6 @@
 
 -- It is not there yet.
 
--- Testing import statements
-use module manatee
-use module whatever
-
 write -0.4
 write 2.54x10^5
 write 10.00004x10^172
@@ -21,7 +17,6 @@ my a01 is a whole number
 my a02 is a truth value
 my a03 is a character
 my a04 is a string
-my a05 is a number
 
 my a06 is always yes
 my a07 is no
@@ -29,13 +24,6 @@ my a08 is always '*'
 my a09 is "a long string"
 
 my a10 is a truth value list list list list list list list
-
--- Used to test left shifted and right shifted
-my a11 is a number
-my a12 is a number
-
--- Used to test codepoint escapes in string literals
-my a13 is a string
 
 read a01
 read a02
@@ -94,62 +82,3 @@ end
 my array is [5.1, 17.1*cat, 22.1, 6.1]
 do sort(array)
 do sort([9.6])
-
--- Testing timer
-do sort(array) after 5 seconds
-
--- Testing unless and until statements
-do nothing unless 1
-do nothing until 1
-do sort(array) unless 1
-do sort(array) until 1
-do sort(array) unless yes or no
-do sort(array) until 1 < 3
-
--- Testing increment and decrement
-set a01 to 5
-increment a01 by 1
-decrement a01 by 1
-
--- Testing divided by and modulo
-set a05 to 5 divided by 3
-set a05 to 3 modulo 1
-
--- Testing right shifted and left shifted
-if 1000 > 3 left shifted 1:
-  do nothing
-end
-if 1000 > 3 right shifted 1:
-  do nothing
-end
-
--- Testing exceptions
-try:
-    do nothing
-recover:
-    do nothing
-end
-
--- Testing objects
-a point has:             -- declares type point
-    a number x           -- declares property x of type point
-    a number y           -- declares property y of type point
-end
-write point {x: 1.1, y: 1.1}
-
--- Testing bit and, or, and xor
-my a14 is 5
-write a14 bit or 1
-write a14 bit xor 1
-write a14 bit and 1
-
--- Testing codepoint escapes in string literals
-set a13 to "yo sam \u{0000}"
-
--- Testing bitwise complement
-write complement of 36
-
--- Testing parallel assignment
-my a15 is 0
-my a16 is 0
-set a15, a16 to 1, 2

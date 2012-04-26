@@ -1,0 +1,6 @@
+-- Test semantically improper while loops
+my x is a number
+
+while "hello":
+    my x is a string
+end

@@ -1,0 +1,2 @@
+-- Testing bitwise and semantic error
+write "hello" bit and "hello"

@@ -1,0 +1,2 @@
+-- Testing semantic incorrect decrement statements
+decrement "hello" by 1

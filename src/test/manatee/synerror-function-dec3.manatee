@@ -1,0 +1,5 @@
+-- Testing syntactically improper function declarations
+my x is "hello"
+
+to echo string x:
+    write x

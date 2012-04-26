@@ -1,0 +1,6 @@
+-- Testing semantically improper function declarations
+my x is always "world"
+
+to hello:
+    set x to "hello"
+end

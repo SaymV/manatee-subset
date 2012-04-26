@@ -1,0 +1,6 @@
+-- Testing exceptions
+try:
+    do nothing
+recover:
+    do nothing
+end

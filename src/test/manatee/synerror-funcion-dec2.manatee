@@ -1,0 +1,5 @@
+my x is "hello"
+
+to echo string x
+    write x
+end

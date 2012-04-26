@@ -1,0 +1,2 @@
+-- Testing bitwise xor syntax
+write 5 bit xor

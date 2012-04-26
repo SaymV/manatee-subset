@@ -1,0 +1,4 @@
+-- Testing divided by syntax errors
+my a05 is a number
+
+set a05 to 3 divided by

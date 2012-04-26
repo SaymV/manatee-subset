@@ -1,0 +1,3 @@
+-- Test semantically incorrect until statements
+
+until 1

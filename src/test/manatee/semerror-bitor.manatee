@@ -1,0 +1,2 @@
+-- Testing bit or semantics
+write "hello" bit or 1

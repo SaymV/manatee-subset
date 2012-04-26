@@ -1,0 +1,4 @@
+-- Testing semantically incorrect parallel assignment
+my a15 is 0
+my a16 is 0
+set a15, a16 to 1, "hello"

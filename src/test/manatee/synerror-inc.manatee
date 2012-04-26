@@ -1,0 +1,2 @@
+-- Testing syntactically incorrect increment statement
+increment 5 lol 1

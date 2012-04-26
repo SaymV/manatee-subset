@@ -1,0 +1,2 @@
+-- Testing bitwise complement semantic errors
+write complement of "hello"

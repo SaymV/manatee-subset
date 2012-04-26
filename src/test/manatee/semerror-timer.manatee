@@ -1,0 +1,8 @@
+-- Testing timer
+my array is [0, 1, 2]
+
+to sort number list x:
+  do nothing
+end
+
+do sort(array) after "hello" seconds
