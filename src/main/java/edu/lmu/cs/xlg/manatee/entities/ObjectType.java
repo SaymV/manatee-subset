@@ -38,6 +38,10 @@ public class ObjectType extends Type {
             if (t == null) {
                 log.error("Invalid object property type.");
             } else {
+                /*
+                 * If the type of a property of an object is the object itself,
+                 * don't bother analyzing the type since it is handled later.
+                 */
                 if (!t.getName().equals(this.getParentType())) {
                     t.analyze(log, table, owner, inLoop);
                     System.out.println("Object property analyzed and type assigned.");
