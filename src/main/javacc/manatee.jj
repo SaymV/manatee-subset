@@ -259,6 +259,7 @@ Variable VARDEC(): {
 
 String TYPE(): {
     String t;
+    Token x;
     StringBuilder builder = new StringBuilder();
 }{
     (
@@ -271,6 +272,8 @@ String TYPE(): {
         "number" {t = "number";}
     |
         "string" {t = "string";}
+    |
+        x = <ID> {t = x.image;}
     )
     {builder.append(t);}
     (
@@ -293,7 +296,7 @@ Type TYPEDEC(): {
     (
         ("a" | "an") propertyType = TYPE() propertyName = <ID>
         {properties.add(new ObjectType.Property(propertyName.image,
-            propertyType));}
+            propertyType, name.image));}
         (<BR>)+
     )+
     "end"

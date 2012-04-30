@@ -1,0 +1,5 @@
+-- Testing nested custom objects... BITCH!
+
+a point has:
+    a point x
+end

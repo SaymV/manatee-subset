@@ -3,31 +3,21 @@ package edu.lmu.cs.xlg.manatee.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.GNOME.Accessibility.Table;
-
 import edu.lmu.cs.xlg.util.Log;
 
 public class ObjectType extends Type {
     private List<Property> properties;
     
     public static class Property extends Entity {
-        String name;
-        Type type;
+        private String name;
+        private Type type;
+        String typeName;
+        private String parentType;
         
-        public void analyze(Log log, SymbolTable table, Subroutine owner, boolean inLoop) {
-            // This does absolutely nothing since the Type analyze method is empty
-            this.type.analyze(log, table, owner, inLoop);
-        }
-        
-        public Property(String name, String type) {
+        public Property(String name, String type, String parentType) {
             this.name = name;
-            
-            /* TODO:
-             * We can not create a new Type to be assigned to this property since in the ObjectLiteral
-             * analyzer, the == operator will fail to properly compare the Types. this.type needs to
-             * be assigned to the already-constructed respective Type in the Type class.
-             */
-            this.type = new Type(type);
+            this.typeName = type;
+            this.parentType = parentType;
         }
         
         public String getName() {
@@ -37,6 +27,24 @@ public class ObjectType extends Type {
         public Type getType() {
             return type;
         }
+        
+        public String getParentType() {
+            return parentType;
+        }
+        
+        @Override
+        public void analyze(Log log, SymbolTable table, Subroutine owner, boolean inLoop) {
+            Type t = table.lookupType(typeName, log);
+            if (t == null) {
+                log.error("Invalid object property type.");
+            } else {
+                if (!t.getName().equals(this.getParentType())) {
+                    t.analyze(log, table, owner, inLoop);
+                    System.out.println("Object property analyzed and type assigned.");
+                    type = t;
+                }
+            }
+        }
     }
     
     public List<Property> getProperties() {
@@ -45,6 +53,7 @@ public class ObjectType extends Type {
     
     public void analyze(Log log, SymbolTable table, Subroutine owner, boolean inLoop) {
         ArrayList<String> history = new ArrayList<String>();
+        
         for (Property p: this.properties) {
             if (history.contains(p.name)) {
                 log.error("Duplicate property IDs in ObjectType.");
@@ -52,7 +61,13 @@ public class ObjectType extends Type {
                 history.add(p.name);
             }
         }
+        
+        System.out.println("Object added to symbol table.");
         table.insert(this, log);
+        
+        for (Property p: this.properties){
+            p.analyze(log, table, owner, inLoop);
+        }
     }
     
     public ObjectType(String name, List<Property> properties) {
