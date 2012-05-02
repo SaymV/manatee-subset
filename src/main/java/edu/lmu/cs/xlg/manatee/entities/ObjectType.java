@@ -8,7 +8,7 @@ import edu.lmu.cs.xlg.util.Log;
 public class ObjectType extends Type {
     private List<Property> properties;
     
-    public static class Property extends Entity {
+    public static class Property extends Expression {
         private String name;
         private Type type;
         String typeName;

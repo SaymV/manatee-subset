@@ -14,7 +14,7 @@ public class ObjectLiteral extends Expression {
         this.args = args;
     }
     
-    public static class Arg extends Entity {
+    public static class Arg extends Expression {
         private String key;
         private Type type;        // This needs to be set in the analyzer
         private Expression value; // ERRTHANG extends Expression
@@ -62,6 +62,19 @@ public class ObjectLiteral extends Expression {
         this.args = args;
     }
     
+    /*
+    public Expression getPropertyValue(String id) {
+        for (Arg a : this.args) {
+            if (a.getKey().equals(id)) {
+                return a;
+            }
+        }
+        
+        log.error("Nonexistent property.");
+        return null;
+    }
+    */
+    
     @Override
     public void analyze(Log log, SymbolTable table, Subroutine owner, boolean inLoop) {
         Type t = table.lookupType(typeName, log);
@@ -89,7 +102,6 @@ public class ObjectLiteral extends Expression {
         for (Arg a: args) {
             if (unfoundProperties.contains(a.getKey())) {
                 a.analyze(log, table, owner, inLoop);
-                // TODO: must verify that property and arg types match
                 // If property found, remove it from unfound properties list
                 unfoundProperties.remove(a.getKey());
                 Type argType = a.getType();

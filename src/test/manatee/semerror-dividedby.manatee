@@ -1,0 +1,2 @@
+-- Testing semantic errors with "divided by"
+write 5 divided by "3"
