@@ -316,6 +316,8 @@ public class ManateeToJavaScriptGenerator extends Generator {
             return "(!(" + operand + "))";
         } else if ("length".equals(e.getOp())) {
             return "((" + operand + ").length)";
+        } else if ("complement".equals(e.getOp())) {
+            return "(~(" + operand + "))";
         } else {
             throw new RuntimeException("Internal Error: unknown unary operator");
         }
@@ -368,8 +370,35 @@ public class ManateeToJavaScriptGenerator extends Generator {
             op = "!==";
         } else if (op.equals("in")) {
             return String.format("(%s.indexOf(%s) >= 0)", right, left);
-        } else if (op.matches("-|/|<<|>>|<|<=|>|>=")) {
-            // Nothing here, just checking the operator is valid
+        } else if (op.equals("right shifted") || op.equals(">>")) {
+            op = ">>";
+        } else if (op.equals("left shifted") || op.equals("<<")) {
+            op = "<<";
+        } else if (op.equals("bit or")) {
+            op = "|";
+        } else if (op.equals("bit xor")) {
+            op = "^";
+        } else if (op.equals("bit and")) {
+            op = "&";
+        } else if (op.equals("-")) {
+            op = "-";
+        } else if (op.equals("/")) {
+            op = "/";
+        } else if (op.equals("<")) {
+            op = "<";
+        } else if (op.equals("<=")) {
+            op = "<=";
+        } else if (op.equals(">")) {
+            op = ">";
+        } else if (op.equals(">=")) {
+            op = ">=";
+        }  else if (op.equals("modulo")) {
+            op = "%";
+        } else if (op.equals("divides")) {
+            // We tried to use String.format() but for some reason it
+            // was not cooperating
+            //return String.format("(!(%s \\% %s))", left, right);
+            return "(!(" + left + " % " + right + "))";
         } else {
             throw new RuntimeException("Internal Error: unknown binary operator");
         }

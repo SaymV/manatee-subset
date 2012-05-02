@@ -54,7 +54,7 @@ TOKEN: {
     | "if" | "while" | "else" | "loop" | "times" | "for" | "each" | "by" | "in" | "or"
     | "yes" | "no" | "not" | "length" | "of"
     | ":" | "," | "+" | "-" | "*" | "/" | "<<" | ">>"
-    | "<" | "<=" | "=" | "≠" | ">=" | ">" | "(" | ")" | "[" | "]"
+    | "<" | "<=" | "=" | "≠" | ">=" | ">" | "(" | ")" | "[" | "]" | "divides"
     | "after" | "second" | "seconds" | "unless" | "until" | "increment" | "decrement"
     | "divided by" | "modulo" | "left shifted" | "right shifted"
     | "try" | "recover" | "has" | "bit" | "xor" | "complement" | "use" | "module"
@@ -781,9 +781,9 @@ List<Expression> EXPLIST(): {
     {return expressions;}
 }
 
-// ------------------------------------------------------
-// RELOP -> '<' | '<=' | '=' | '≠' | '>=' | '>' | is not?
-// ------------------------------------------------------
+// -------------------------------------------------------------------
+// RELOP -> '<' | '<=' | '=' | '≠' | '>=' | '>' | is not? | 'divides'
+// -------------------------------------------------------------------
 
 String RELOP(): {
 }{
@@ -802,6 +802,8 @@ String RELOP(): {
     LOOKAHEAD(2) "is" "not" {return "is not";}
     |
     "is" {return "is";}
+    |
+    "divides" {return "divides";}
 }
 
 // ----------------------------------------------------------

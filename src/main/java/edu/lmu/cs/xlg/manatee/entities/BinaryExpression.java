@@ -65,7 +65,7 @@ public class BinaryExpression extends Expression {
             type = Type.WHOLE_NUMBER;
 
         // char/num/str op char/num/str (for greater/less inequalities)
-        } else if (op.matches("<|<=|>|>=")) {
+        } else if (op.matches("<|<=|>|>=|divides")) {
             if (left.type == Type.CHARACTER) {
                 right.assertChar(op, log);
             } else if (left.type == Type.STRING) {

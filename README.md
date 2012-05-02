@@ -17,7 +17,7 @@ Here are some of the full language features not implemented in this subset:
 * Exceptions                                                - Added - Not generating
 * Timers                                                    - Added - Not generating
 * `unless` and `until` modifiers                            - Added - Not generating
-* Bitwise operators                                         - Added
-* Modulo operator                                           - Added
-* Divides operator                                          - Added
-* Bitwise complement operator                               - Added
+* Bitwise operators                                         - Added - Done!
+* Modulo operator                                           - Added - Done!
+* Divides operator                                          - Added - Done!
+* Bitwise complement operator                               - Added - Done!
