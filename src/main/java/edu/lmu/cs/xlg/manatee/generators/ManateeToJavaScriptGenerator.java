@@ -39,6 +39,7 @@ import edu.lmu.cs.xlg.manatee.entities.Subroutine;
 import edu.lmu.cs.xlg.manatee.entities.SubscriptExpression;
 import edu.lmu.cs.xlg.manatee.entities.TimesLoop;
 import edu.lmu.cs.xlg.manatee.entities.Type;
+import edu.lmu.cs.xlg.manatee.entities.TryStatement;
 import edu.lmu.cs.xlg.manatee.entities.UnaryExpression;
 import edu.lmu.cs.xlg.manatee.entities.Variable;
 import edu.lmu.cs.xlg.manatee.entities.WhileLoop;
@@ -184,6 +185,15 @@ public class ManateeToJavaScriptGenerator extends Generator {
             String target = generateExpression(is.getTarget());
             String delta = generateExpression(is.getDelta());
             emit(String.format("%s += %s;", target, delta));
+        } else if (s instanceof TryStatement) {
+            TryStatement ts = TryStatement.class.cast(s);
+            Block tryBlock = ts.getTryBlock();
+            Block recoverBlock = ts.getRecoverBlock();
+            emit("try {");
+            generateBlock(tryBlock);
+            emit("} catch (e) {");
+            generateBlock(recoverBlock);
+            emit("}");
         }
     }
     
