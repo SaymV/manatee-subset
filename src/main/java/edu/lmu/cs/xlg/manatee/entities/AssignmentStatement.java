@@ -20,6 +20,9 @@ public class AssignmentStatement extends Statement {
     	return this.target.size();
     }
     
+    public int getSourceLength() {
+        return this.source.size();
+    }
     public Expression getTarget(int i) {
         return target.get(i);
     }
@@ -27,9 +30,12 @@ public class AssignmentStatement extends Statement {
     public Expression getSource(int i) {
         return source.get(i);
     }
-
+    
     @Override
     public void analyze(Log log, SymbolTable table, Subroutine owner, boolean inLoop) {
+        if (this.target.size() != this.source.size()) {
+            log.error("unequal.target.and.sources.sizes");
+        }
     	for (int x = 0; x < this.target.size(); x++) {
     		target.get(x).analyze(log, table, owner, inLoop);
             source.get(x).analyze(log, table, owner, inLoop);

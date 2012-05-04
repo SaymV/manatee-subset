@@ -84,13 +84,22 @@ public class ManateeToJavaScriptGenerator extends Generator {
 
         } else if (s instanceof AssignmentStatement) {
             AssignmentStatement a = AssignmentStatement.class.cast(s);
+            Variable v = new Variable("srcguard", Type.ARBITRARY);
             String target, source;
-            for (int i = 0; i < a.getTargetLength(); i++) {
-	            target = generateExpression(a.getTarget(i));
-	            source = generateExpression(a.getSource(i));
-	            emit(String.format("%s = %s;", target, source));
+            if (a.getTargetLength() > 1) {
+                for (int i = 0; i < a.getTargetLength(); i++) {
+                    target = id(v) + "_" + i;
+                    source = generateExpression(a.getSource(i));
+                    emit(String.format("%s = %s;", target, source));
+                    source = target;
+                    target = generateExpression(a.getTarget(i));
+                    emit(String.format("%s = %s;", target, source));
+                }
+            } else {
+                target = generateExpression(a.getTarget(0));
+                source = generateExpression(a.getSource(0));
+                emit(String.format("%s = %s;", target, source));
             }
-
         } else if (s instanceof ReadStatement) {
             // What exactly does the ReadStatement do?
             Expression e = ReadStatement.class.cast(s).getExpression();
