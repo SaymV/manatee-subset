@@ -91,8 +91,10 @@ public class ManateeToJavaScriptGenerator extends Generator {
                     target = id(v) + "_" + i;
                     source = generateExpression(a.getSource(i));
                     emit(String.format("%s = %s;", target, source));
-                    source = target;
+                }
+                for (int i = 0; i < a.getTargetLength(); i++) {
                     target = generateExpression(a.getTarget(i));
+                    source = id(v) + "_" + i;
                     emit(String.format("%s = %s;", target, source));
                 }
             } else {
