@@ -12,6 +12,7 @@ Here are some of the full language features not implemented in this subset:
 
 * Codepoint escapes in character and string literals        - Added - Not generating
 * Object types and literals                                 - Added - Not generating
+    - Object property access is not working properly
 * Increment and decrement statements                        - Added - Done!
 * Parallel assignment                                       - Added - Done!
 * Exceptions                                                - Added - Done!
