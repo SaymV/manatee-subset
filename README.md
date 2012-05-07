@@ -22,3 +22,5 @@ Here are some of the full language features not implemented in this subset:
 * Modulo operator                                           - Added - Done!
 * Divides operator                                          - Added - Done!
 * Bitwise complement operator                               - Added - Done!
+* Modules
+* The down modifier on range loops
