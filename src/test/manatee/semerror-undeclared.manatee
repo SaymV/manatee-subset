@@ -1,1 +1,3 @@
+-- Test for undeclared variables
+
 write y

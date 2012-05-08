@@ -86,6 +86,11 @@ public class ManateeToJavaScriptGenerator extends Generator {
             AssignmentStatement a = AssignmentStatement.class.cast(s);
             Variable v = new Variable("srcguard", Type.ARBITRARY);
             String target, source;
+            
+            /*
+             * Ensure that for parallel assignment, swaps (set x, y to y, x) can be
+             * properly performed. Otherwise, a naive assignment is performed.
+             */
             if (a.getTargetLength() > 1) {
                 for (int i = 0; i < a.getTargetLength(); i++) {
                     target = id(v) + "_" + i;
@@ -103,7 +108,7 @@ public class ManateeToJavaScriptGenerator extends Generator {
                 emit(String.format("%s = %s;", target, source));
             }
         } else if (s instanceof ReadStatement) {
-            // What exactly does the ReadStatement do?
+            // What exactly does the ReadStatement do in JavaScript?
             Expression e = ReadStatement.class.cast(s).getExpression();
             emit("console.log(" + generateExpression(e) + ");");
 
@@ -177,6 +182,10 @@ public class ManateeToJavaScriptGenerator extends Generator {
             String high = generateExpression(loop.getHigh());
             String step = loop.getStep() == null ? "1" : generateExpression(loop.getStep());
             
+            /*
+             * If "down to" is present, we will decrement while index is higher
+             * than high. Otherwise, we will proceed normally.
+             */
             if (!RangeLoop.class.cast(s).isDown()) {
                 emit(String.format("for (var %s = %s; %s <= %s; %s += %s) {",
                         index, low, index, high, index, step));
@@ -194,16 +203,26 @@ public class ManateeToJavaScriptGenerator extends Generator {
             generateBlock(loop.getBody());
             emit("}");
         } else if (s instanceof DecrementStatement) {
+            /*
+             * Generate a simple JS decrement statement.
+             */
             DecrementStatement ds = DecrementStatement.class.cast(s);
             String target = generateExpression(ds.getTarget());
             String delta = generateExpression(ds.getDelta());
             emit(String.format("%s -= %s;", target, delta));
         } else if (s instanceof IncrementStatement) {
+            /*
+             * Generate a simple JS increment statement.
+             */
             IncrementStatement is = IncrementStatement.class.cast(s);
             String target = generateExpression(is.getTarget());
             String delta = generateExpression(is.getDelta());
             emit(String.format("%s += %s;", target, delta));
         } else if (s instanceof TryStatement) {
+            /*
+             * Generate a simple JS try/catch statement that doesn't attempt to
+             * retrieve any information from the error object that was caught.
+             */
             TryStatement ts = TryStatement.class.cast(s);
             Block tryBlock = ts.getTryBlock();
             Block recoverBlock = ts.getRecoverBlock();
@@ -341,10 +360,12 @@ public class ManateeToJavaScriptGenerator extends Generator {
         if ("-".equals(e.getOp())) {
             return "(-(" + operand + "))";
         } else if ("not".equals(e.getOp())) {
+            // Simple not
             return "(!(" + operand + "))";
         } else if ("length".equals(e.getOp())) {
             return "((" + operand + ").length)";
         } else if ("complement".equals(e.getOp())) {
+            // Bitwise negation
             return "(~(" + operand + "))";
         } else {
             throw new RuntimeException("Internal Error: unknown unary operator");
@@ -360,6 +381,11 @@ public class ManateeToJavaScriptGenerator extends Generator {
         String left = generateExpression(e.getLeft());
         String right = generateExpression(e.getRight());
 
+        /*
+         * Implemented bitwise operators and equality comparators along with
+         * modulo and divides
+         */
+        
         if (op.equals("+")) {
             if (e.getLeft().isArrayOrString() || e.getRight().isArray()) {
                 if (e.getLeft().isArray()) {
@@ -423,9 +449,6 @@ public class ManateeToJavaScriptGenerator extends Generator {
         }  else if (op.equals("modulo")) {
             op = "%";
         } else if (op.equals("divides")) {
-            // We tried to use String.format() but for some reason it
-            // was not cooperating
-            //return String.format("(!(%s \\% %s))", left, right);
             return "(!(" + left + " % " + right + "))";
         } else {
             throw new RuntimeException("Internal Error: unknown binary operator");

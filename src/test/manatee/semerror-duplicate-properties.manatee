@@ -1,3 +1,5 @@
+-- Test for non-unique ID semantic errors
+
 an ejaso has:
     a number age
     a string age

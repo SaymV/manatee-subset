@@ -1,2 +1,4 @@
+-- Test for unbalanced parentheses
+
 my x is 2
 write (34

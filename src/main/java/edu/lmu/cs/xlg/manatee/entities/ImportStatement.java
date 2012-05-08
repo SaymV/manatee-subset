@@ -2,6 +2,10 @@ package edu.lmu.cs.xlg.manatee.entities;
 
 import edu.lmu.cs.xlg.util.Log;
 
+
+/**
+ * This was completed before it was deprecated.
+ */
 public class ImportStatement extends Statement {
 	
 	private String moduleName;
@@ -16,7 +20,6 @@ public class ImportStatement extends Statement {
 
 	@Override
 	public void analyze(Log log, SymbolTable table, Subroutine owner, boolean inLoop) {
-		// Have to check to see if the module exists
 	}
 
 }

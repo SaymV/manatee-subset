@@ -3,7 +3,7 @@ package edu.lmu.cs.xlg.manatee.entities;
 import edu.lmu.cs.xlg.util.Log;
 
 /**
- * An assignment statement.
+ * An increment statement.
  */
 public class IncrementStatement extends Statement {
 
@@ -12,12 +12,13 @@ public class IncrementStatement extends Statement {
 
     public IncrementStatement(Expression target, Expression delta) {
         this.target = target;
+        
+        // If delta is not given, assume increment of 1
         if (delta == null) {
             this.delta = new WholeNumberLiteral("1");
         } else {
             this.delta = delta;
         }
-        
     }
 
     public Expression getTarget() {
@@ -32,16 +33,13 @@ public class IncrementStatement extends Statement {
     public void analyze(Log log, SymbolTable table, Subroutine owner, boolean inLoop) {
         target.analyze(log, table, owner, inLoop);
         
-        // Should target be an expression or an ID? Discuss...
         if (!target.isWritableLValue()) {
             log.error("non.writable.in.increment.statement");
         }
         
+        // Ensure that target and delta are both integers
         delta.analyze(log, table, owner, inLoop);
         delta.assertInteger("Increment delta value is not a whole number.", log);
         target.assertInteger("Target of increment is not a whole number.", log);
-        
-        // assertAssignableTo does type checking and therefore is irrelevant?
-        // target.assertAssignableTo(target.getType(), log, "increment.type.mismatch");
     }
 }

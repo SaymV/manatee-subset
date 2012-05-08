@@ -1,3 +1,5 @@
+-- Test function declarations for syntactic errors
+
 my x is "hello"
 
 to echo string x:

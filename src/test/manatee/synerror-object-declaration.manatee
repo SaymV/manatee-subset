@@ -1,3 +1,5 @@
+-- Test for syntax errors in object declarations
+
 an ejaso has
     a number age
     a string name

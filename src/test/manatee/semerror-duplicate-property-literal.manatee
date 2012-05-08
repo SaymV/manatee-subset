@@ -1,3 +1,5 @@
+-- Test for non-unique IDs in ObjectLiterals
+
 an ejaso has:
     a number age
     a string name

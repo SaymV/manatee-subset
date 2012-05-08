@@ -1,2 +1,4 @@
+-- Test for re-declaration errors
+
 my x is 3
 my x is "3"

@@ -5,6 +5,9 @@ import java.util.HashMap;
 
 import edu.lmu.cs.xlg.util.Log;
 
+/**
+ * ObjectLiterals represent individual instances of ObjectTypes
+ */
 public class ObjectLiteral extends Expression {
     private String typeName;
     private ArrayList<Arg> args = new ArrayList<Arg>();
@@ -14,10 +17,13 @@ public class ObjectLiteral extends Expression {
         this.args = args;
     }
     
+    /**
+     * Args represent properties of an object
+     */
     public static class Arg extends Expression {
         private String key;
-        private Type type;        // This needs to be set in the analyzer
-        private Expression value; // ERRTHANG extends Expression
+        private Type type;
+        private Expression value;
         
         public Arg(String key, Expression value) {
             this.key = key;
@@ -38,8 +44,9 @@ public class ObjectLiteral extends Expression {
         
         @Override
         public void analyze(Log log, SymbolTable table, Subroutine owner, boolean inLoop) {
-            // TODO: Type needs to be set and checked for in the symbol table
             value.analyze(log, table, owner, inLoop);
+            
+            // Ensure the current property has a legitimate type
             Type t = table.lookupType(value.getType().getName(), log);
             if (t == null) {
                 log.error("Invalid object property type.");
@@ -52,12 +59,15 @@ public class ObjectLiteral extends Expression {
     public String getTypeName() {
         return typeName;
     }
+    
     public void setTypeName(String typeName) {
         this.typeName = typeName;
     }
+    
     public ArrayList<Arg> getArgs() {
         return args;
     }
+    
     public void setArgs(ArrayList<Arg> args) {
         this.args = args;
     }
@@ -111,6 +121,7 @@ public class ObjectLiteral extends Expression {
             log.error("Unassigned properties.");
         }
         
+        // Set the type to the corresponding ObjectType if all is well
         super.type = t;
     }
     

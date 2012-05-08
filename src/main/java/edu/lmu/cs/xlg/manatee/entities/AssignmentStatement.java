@@ -36,6 +36,10 @@ public class AssignmentStatement extends Statement {
         if (this.target.size() != this.source.size()) {
             log.error("unequal.target.and.sources.sizes");
         }
+        
+        /*
+         * ArrayLists support parallel assignment.
+         */
     	for (int x = 0; x < this.target.size(); x++) {
     		target.get(x).analyze(log, table, owner, inLoop);
             source.get(x).analyze(log, table, owner, inLoop);

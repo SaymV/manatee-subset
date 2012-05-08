@@ -5,9 +5,45 @@ import java.util.List;
 
 import edu.lmu.cs.xlg.util.Log;
 
+/**
+ * ObjectType represents the declaration of a custom object
+ */
 public class ObjectType extends Type {
     private List<Property> properties;
     
+    public ObjectType(String name, List<Property> properties) {
+        super(name);
+        this.properties = properties;
+    }
+    
+    public List<Property> getProperties() {
+        return properties;
+    }
+    
+    public void analyze(Log log, SymbolTable table, Subroutine owner, boolean inLoop) {
+        ArrayList<String> history = new ArrayList<String>();
+        
+        // Check for duplicate property IDs
+        for (Property p: this.properties) {
+            if (history.contains(p.name)) {
+                log.error("Duplicate property IDs in ObjectType.");
+            } else {
+                history.add(p.name);
+            }
+        }
+        
+        // Insert that beotch into the table if all is well
+        table.insert(this, log);
+        
+        // Individually analyze all the properties in object
+        for (Property p: this.properties){
+            p.analyze(log, table, owner, inLoop);
+        }
+    }
+    
+    /**
+     * Properties represent properties of an ObjectType
+     */
     public static class Property extends Expression {
         private String name;
         private Type type;
@@ -50,32 +86,4 @@ public class ObjectType extends Type {
             }
         }
     }
-    
-    public List<Property> getProperties() {
-        return properties;
-    }
-    
-    public void analyze(Log log, SymbolTable table, Subroutine owner, boolean inLoop) {
-        ArrayList<String> history = new ArrayList<String>();
-        
-        for (Property p: this.properties) {
-            if (history.contains(p.name)) {
-                log.error("Duplicate property IDs in ObjectType.");
-            } else {
-                history.add(p.name);
-            }
-        }
-        
-        table.insert(this, log);
-        
-        for (Property p: this.properties){
-            p.analyze(log, table, owner, inLoop);
-        }
-    }
-    
-    public ObjectType(String name, List<Property> properties) {
-        super(name);
-        this.properties = properties;
-    }
-
 }

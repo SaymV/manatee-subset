@@ -1,1 +1,3 @@
+-- Test for syntactically incorrect variable declarations
+
 var x is 10
