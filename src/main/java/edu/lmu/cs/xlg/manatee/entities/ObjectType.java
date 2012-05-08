@@ -66,7 +66,6 @@ public class ObjectType extends Type {
             }
         }
         
-        System.out.println("Object added to symbol table.");
         table.insert(this, log);
         
         for (Property p: this.properties){

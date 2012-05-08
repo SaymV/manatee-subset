@@ -62,19 +62,6 @@ public class ObjectLiteral extends Expression {
         this.args = args;
     }
     
-    /*
-    public Expression getPropertyValue(String id) {
-        for (Arg a : this.args) {
-            if (a.getKey().equals(id)) {
-                return a;
-            }
-        }
-        
-        log.error("Nonexistent property.");
-        return null;
-    }
-    */
-    
     @Override
     public void analyze(Log log, SymbolTable table, Subroutine owner, boolean inLoop) {
         Type t = table.lookupType(typeName, log);
@@ -123,6 +110,8 @@ public class ObjectLiteral extends Expression {
         if (unfoundProperties.size() > 0) {
             log.error("Unassigned properties.");
         }
+        
+        super.type = t;
     }
     
 }

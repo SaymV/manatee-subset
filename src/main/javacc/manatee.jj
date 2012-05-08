@@ -491,6 +491,7 @@ Statement CONDITIONAL(): {
 // LOOPCONTROL -> loop (EXP times)?
 //             |  while EXP
 //             |  for each ID in EXP (to EXP (by EXP)?)?
+//(down? to EXP (by EXP)?)?
 // -----------------------------------------------------
 
 Statement LOOP(): {
@@ -702,7 +703,7 @@ Expression EXP10(): {
         {e = new SubscriptExpression(e, subscript);}
     |
         "." t = <ID>
-        {System.out.println("HAPPY"); e = new PropertyReference(e, t.image);}
+        {e = new PropertyReference(e, t.image);}
     )*
     {return e;}
 }
