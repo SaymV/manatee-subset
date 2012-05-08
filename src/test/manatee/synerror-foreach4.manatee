@@ -1,0 +1,5 @@
+-- Testing syntax errors in for each loops
+
+for each i in "hello" down 1 by 4:
+  write 0
+end

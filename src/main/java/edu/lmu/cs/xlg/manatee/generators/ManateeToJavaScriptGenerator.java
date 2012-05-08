@@ -176,8 +176,15 @@ public class ManateeToJavaScriptGenerator extends Generator {
             String low = generateExpression(loop.getLow());
             String high = generateExpression(loop.getHigh());
             String step = loop.getStep() == null ? "1" : generateExpression(loop.getStep());
-            emit(String.format("for (var %s = %s; %s <= %s; %s += %s) {",
-                    index, low, index, high, index, step));
+            
+            if (!RangeLoop.class.cast(s).isDown()) {
+                emit(String.format("for (var %s = %s; %s <= %s; %s += %s) {",
+                        index, low, index, high, index, step));
+            } else {
+                emit(String.format("for (var %s = %s; %s >= %s; %s -= %s) {",
+                        index, low, index, high, index, step));
+            }
+            
             generateBlock(loop.getBody());
             emit("}");
 

@@ -1,0 +1,9 @@
+-- Test for semantic errors in object property references
+
+a point has:
+    a number x
+end
+
+my p is point {x: 1}
+
+set p.x to "hello"

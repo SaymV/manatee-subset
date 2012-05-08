@@ -12,7 +12,6 @@ Here are some of the full language features not implemented in this subset:
 
 * Codepoint escapes in character and string literals        - Added - Not generating
 * Object types and literals                                 - Added - Not generating
-    - Object property access is not working properly
 * Increment and decrement statements                        - Added - Done!
 * Parallel assignment                                       - Added - Done!
 * Exceptions                                                - Added - Done!
@@ -22,5 +21,7 @@ Here are some of the full language features not implemented in this subset:
 * Modulo operator                                           - Added - Done!
 * Divides operator                                          - Added - Done!
 * Bitwise complement operator                               - Added - Done!
+* The down modifier on range loops                          - Added - Done!
+
 * Modules                                                   - Deprecated
-* The down modifier on range loops
+

@@ -56,7 +56,7 @@ TOKEN: {
     | ":" | "," | "+" | "-" | "*" | "/" | "<<" | ">>"
     | "<" | "<=" | "=" | "≠" | ">=" | ">" | "(" | ")" | "[" | "]" | "divides"
     | "after" | "second" | "seconds" | "unless" | "until" | "increment" | "decrement"
-    | "divided by" | "modulo" | "left shifted" | "right shifted"
+    | "divided by" | "modulo" | "left shifted" | "right shifted" | "down"
     | "try" | "recover" | "has" | "bit" | "xor" | "complement" | "use" | "module"
 |
     < BR: "\n" | "\r" | "\r\n" >
@@ -490,8 +490,7 @@ Statement CONDITIONAL(): {
 // LOOP        -> LOOPCONTROL BLOCK end
 // LOOPCONTROL -> loop (EXP times)?
 //             |  while EXP
-//             |  for each ID in EXP (to EXP (by EXP)?)?
-//(down? to EXP (by EXP)?)?
+//             |  for each ID in EXP (down? to EXP (by EXP)?)?
 // -----------------------------------------------------
 
 Statement LOOP(): {
@@ -499,6 +498,7 @@ Statement LOOP(): {
     Expression e = null;
     Expression e2 = null;
     Expression e3 = null;
+    boolean down = false;
     Block b;
 }{
     (
@@ -510,14 +510,14 @@ Statement LOOP(): {
     |
         "for" "each" t = <ID> "in" e = EXP()
         (
-            "to" e2 = EXP() ("by" e3 = EXP())?
+            ("down" {down = true;})? "to" e2 = EXP() ("by" e3 = EXP())?
         )?
         b = BLOCK() "end"
         {
             if (e2 == null) {
                 return new CollectionLoop(t.image, e, b);
             } else {
-                return new RangeLoop(t.image, e, e2, e3, b);
+                return new RangeLoop(t.image, e, e2, e3, b, down);
             }
         }
     )

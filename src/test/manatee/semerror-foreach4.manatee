@@ -1,0 +1,5 @@
+-- Test for semantic errors in for each loops using "down to"
+my i is a whole number
+for each i in "hello" down to 1 by 4:
+  write 0
+end
